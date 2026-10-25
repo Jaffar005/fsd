@@ -9,7 +9,7 @@ from langchain_community.vectorstores import Chroma
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_groq import ChatGroq
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv()
@@ -64,7 +64,7 @@ def init_rag() -> None:
         )
 
     CHROMA_DIR = os.path.join(os.path.dirname(__file__), "chroma_db")
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
 
     if os.path.exists(CHROMA_DIR) and len(os.listdir(CHROMA_DIR)) > 0:
         vectorstore = Chroma(persist_directory=CHROMA_DIR, embedding_function=embeddings)
