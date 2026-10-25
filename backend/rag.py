@@ -73,8 +73,12 @@ def init_rag() -> None:
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
         chunks = splitter.split_documents(documents)
         vectorstore = Chroma.from_documents(
-            documents=chunks, embedding=embeddings, persist_directory=CHROMA_DIR
+            documents=chunks[:25], embedding=embeddings, persist_directory=CHROMA_DIR
         )
+        for i in range(25, len(chunks), 25):
+            vectorstore.add_documents(chunks[i : i + 25])
+            import gc
+            gc.collect()
 
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
     llm = ChatGroq(model=CHAT_MODEL)
