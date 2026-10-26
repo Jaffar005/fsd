@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: rag-backend
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: DB_NAME
+        value: conversational_rag
+      - key: DB_BACKEND
+        value: mongo
+      - key: PDF_PATH
+        value: report.pdf
+      - key: CHAT_MODEL
+        value: openai/gpt-oss-120b
+      - key: TITLE_MODEL
+        value: llama-3.1-8b-instant
+      - key: CORS_ORIGINS
+        sync: false
