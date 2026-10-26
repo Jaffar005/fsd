@@ -44,6 +44,16 @@ def _generate_title_task(session_id: str, question: str) -> None:
     db.set_generated_title(session_id, rag.generate_title(question))
 
 
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "message": "Conversational RAG API is running successfully!",
+        "docs": "/docs",
+        "health": "/api/health",
+    }
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
